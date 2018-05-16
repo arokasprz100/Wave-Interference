@@ -212,6 +212,7 @@ Makefile: ../WaveInterference/WaveInterference.pro ../../../Qt/version/5.10.1/mi
 		../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/qt_config.prf \
 		../../../Qt/version/5.10.1/mingw53_32/mkspecs/win32-g++/qmake.conf \
 		../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/toolchain.prf \
 		../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/default_pre.prf \
@@ -391,6 +392,7 @@ Makefile: ../WaveInterference/WaveInterference.pro ../../../Qt/version/5.10.1/mi
 ../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/qt_config.prf:
 ../../../Qt/version/5.10.1/mingw53_32/mkspecs/win32-g++/qmake.conf:
 ../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/toolchain.prf:
 ../../../Qt/version/5.10.1/mingw53_32/mkspecs/features/default_pre.prf:
