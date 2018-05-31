@@ -19,8 +19,6 @@ int main(int argc, char *argv[])
                      &model, SLOT(start_animation()));
     QObject::connect(&w, SIGNAL(redraw()),
                      &model, SLOT(redraw()));
-    model.repaint();
-    w.print_receivers();
 
     return a.exec();
 }
