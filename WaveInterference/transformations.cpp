@@ -83,7 +83,7 @@ Matrix get_centering_matrix(int width, int height)
 
 }
 
-Matrix Translate(int width, int height)
+Matrix Translate(double width, double height)
 {
     Matrix translation;
 
