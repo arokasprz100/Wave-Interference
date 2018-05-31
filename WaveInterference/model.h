@@ -29,9 +29,14 @@ private:
     QSize m_draw_size;
     MainWindow& m_view;
     QPixmap m_bitmap;
+    int& x_rotation;
+    int& y_rotation;
+    int& z_rotation;
+    bool& is_animated;
 
 public slots:
     void set_draw_size(QSize draw_size);
+    void start_animation();
 };
 
 #endif // MODEL_H

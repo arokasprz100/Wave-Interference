@@ -3,13 +3,13 @@
 
 #include "matrix.h"
 
-Matrix get_x_rotation_matrix();
+Matrix get_x_rotation_matrix(double angle);
 
-Matrix get_y_rotation_matrix();
+Matrix get_y_rotation_matrix(double angle);
 
-Matrix get_z_rotation_matrix();
+Matrix get_z_rotation_matrix(double angle);
 
-Matrix get_rotation_matrix();
+Matrix get_rotation_matrix(double angle_x, double angle_y, double angle_z);
 
 Matrix get_scaling_matrix();
 

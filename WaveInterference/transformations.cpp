@@ -2,10 +2,10 @@
 #include <cmath>
 #include <QGraphicsScene>
 
-Matrix get_x_rotation_matrix()
+Matrix get_x_rotation_matrix(double angle)
 {
     Matrix x_rotation_matrix;
-    double angle = 0;
+    angle = angle * M_PI/180.0;
     x_rotation_matrix[0][0] = 1.0;
     x_rotation_matrix[1][1] = x_rotation_matrix[2][2] = cos(angle);
     x_rotation_matrix[1][2] = -sin(angle);
@@ -14,10 +14,10 @@ Matrix get_x_rotation_matrix()
     return x_rotation_matrix;
 }
 
-Matrix get_y_rotation_matrix()
+Matrix get_y_rotation_matrix(double angle)
 {
     Matrix y_rotation_matrix;
-    double angle = 45.0 * M_PI/180.0;
+    angle = angle * M_PI/180.0;
     y_rotation_matrix[1][1] = 1.0;
     y_rotation_matrix[0][0] = y_rotation_matrix[2][2] = cos(angle);
     y_rotation_matrix[2][0] = -sin(angle);
@@ -26,10 +26,10 @@ Matrix get_y_rotation_matrix()
     return y_rotation_matrix;
 }
 
-Matrix get_z_rotation_matrix()
+Matrix get_z_rotation_matrix(double angle)
 {
     Matrix z_rotation_matrix;
-    double angle = 45.0 * M_PI/180.0;
+    angle = angle * M_PI/180.0;
     z_rotation_matrix[2][2] = 1.0;
     z_rotation_matrix[0][0] = z_rotation_matrix[1][1] = cos(angle);
     z_rotation_matrix[0][1] = -sin(angle);
@@ -38,9 +38,9 @@ Matrix get_z_rotation_matrix()
     return z_rotation_matrix;
 }
 
-Matrix get_rotation_matrix()
+Matrix get_rotation_matrix(double angle_x, double angle_y, double angle_z)
 {
-    return get_x_rotation_matrix() * get_y_rotation_matrix() * get_z_rotation_matrix();
+    return get_x_rotation_matrix(angle_x) * get_y_rotation_matrix(angle_y) * get_z_rotation_matrix(angle_z);
 }
 
 
@@ -48,7 +48,7 @@ Matrix get_scaling_matrix()
 {
     Matrix scaling_matrix;
 
-    double scale = 0.1;
+    double scale = 0.001;
 
     scaling_matrix[0][0] = scale;
     scaling_matrix[1][1] = scale;

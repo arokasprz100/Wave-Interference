@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QGraphicsScene* scene = new QGraphicsScene(this);
     ui->setupUi(this);
     ui->graphicsView->setScene(scene);
+    x_rotation = y_rotation = z_rotation = 0;
+    is_animated = false;
 }
 
 MainWindow::~MainWindow()
@@ -25,4 +27,41 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 
 void MainWindow::print_receivers(){
     std::cout<<receivers(SIGNAL(window_resized(QSize)));
+}
+
+void MainWindow::z_rotated(int rcv){
+    z_rotation = rcv;
+}
+
+void MainWindow::y_rotated(int rcv){
+    y_rotation = rcv;
+}
+
+void MainWindow::x_rotated(int rcv){
+    x_rotation = rcv;
+}
+
+void MainWindow::start_clicked(){
+    if(!is_animated){
+       ui->m_clipboard->setDisabled(true);
+       ui->m_save->setDisabled(true);
+       ui->m_next->setDisabled(true);
+       ui->m_previous->setDisabled(true);
+       ui->x_bar->setDisabled(true);
+       ui->y_bar->setDisabled(true);
+       ui->z_bar->setDisabled(true);
+       ui->m_animation->setText("Stop");
+       is_animated=true;
+       emit start_animation();
+    }else if(is_animated){
+        ui->m_clipboard->setDisabled(false);
+        ui->m_save->setDisabled(false);
+        ui->m_next->setDisabled(false);
+        ui->m_previous->setDisabled(false);
+        ui->x_bar->setDisabled(false);
+        ui->y_bar->setDisabled(false);
+        ui->z_bar->setDisabled(false);
+        ui->m_animation->setText("Start");
+        is_animated=false;
+    }
 }
