@@ -38,6 +38,7 @@ signals:
     void next();
     void previous();
     void start_animation();
+    void redraw();
 
 public slots:
     void z_rotated(int rcv);

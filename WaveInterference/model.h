@@ -37,6 +37,7 @@ private:
 public slots:
     void set_draw_size(QSize draw_size);
     void start_animation();
+    void redraw();
 };
 
 #endif // MODEL_H

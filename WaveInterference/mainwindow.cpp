@@ -31,14 +31,17 @@ void MainWindow::print_receivers(){
 
 void MainWindow::z_rotated(int rcv){
     z_rotation = rcv;
+    emit redraw();
 }
 
 void MainWindow::y_rotated(int rcv){
     y_rotation = rcv;
+    emit redraw();
 }
 
 void MainWindow::x_rotated(int rcv){
     x_rotation = rcv;
+    emit redraw();
 }
 
 void MainWindow::start_clicked(){

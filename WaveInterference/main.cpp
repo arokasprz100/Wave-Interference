@@ -17,6 +17,8 @@ int main(int argc, char *argv[])
                      &model, SLOT(set_draw_size(QSize)));
     QObject::connect(&w, SIGNAL(start_animation()),
                      &model, SLOT(start_animation()));
+    QObject::connect(&w, SIGNAL(redraw()),
+                     &model, SLOT(redraw()));
     model.repaint();
     w.print_receivers();
 

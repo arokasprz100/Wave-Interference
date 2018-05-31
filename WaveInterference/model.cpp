@@ -56,6 +56,7 @@ void Model::set_draw_size(QSize draw_size){
 void Model::repaint()
 {
     QGraphicsScene& draw_interface = *m_view.access_ui().graphicsView->scene();
+    draw_interface.clear();
     vector_vector transformed_points;
     Matrix transformations = get_scaling_matrix()*get_rotation_matrix(x_rotation, y_rotation, z_rotation)* get_centering_matrix(m_width_in_points*20, m_height_in_points*20);
     for(unsigned i = 0; i< m_points.size(); ++i){
@@ -87,4 +88,8 @@ void Model::repaint()
 
 void Model::start_animation(){
     std::cout<<"started animation"<<std::endl;
+}
+
+void Model::redraw(){
+    repaint();
 }
