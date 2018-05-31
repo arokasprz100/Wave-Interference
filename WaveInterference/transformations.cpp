@@ -2,10 +2,12 @@
 #include <cmath>
 #include <QGraphicsScene>
 
+double pi = 3.14159265359;
+
 Matrix get_x_rotation_matrix(double angle)
 {
     Matrix x_rotation_matrix;
-    angle = angle * 3.14/180.0;
+    angle = angle * pi/180.0;
     x_rotation_matrix[0][0] = 1.0;
     x_rotation_matrix[1][1] = x_rotation_matrix[2][2] = cos(angle);
     x_rotation_matrix[1][2] = -sin(angle);
@@ -17,7 +19,7 @@ Matrix get_x_rotation_matrix(double angle)
 Matrix get_y_rotation_matrix(double angle)
 {
     Matrix y_rotation_matrix;
-    angle = angle * 3.14/180.0;
+    angle = angle * pi/180.0;
     y_rotation_matrix[1][1] = 1.0;
     y_rotation_matrix[0][0] = y_rotation_matrix[2][2] = cos(angle);
     y_rotation_matrix[2][0] = -sin(angle);
@@ -29,7 +31,7 @@ Matrix get_y_rotation_matrix(double angle)
 Matrix get_z_rotation_matrix(double angle)
 {
     Matrix z_rotation_matrix;
-    angle = angle * 3.14/180.0;
+    angle = angle * pi/180.0;
     z_rotation_matrix[2][2] = 1.0;
     z_rotation_matrix[0][0] = z_rotation_matrix[1][1] = cos(angle);
     z_rotation_matrix[0][1] = -sin(angle);
@@ -90,8 +92,8 @@ Matrix Translate(double width, double height)
     for (int i = 0; i < 4; ++i)
         translation[i][i] = 1.0;
 
-    translation[0][3] = width/2.0;
-    translation[1][3] = height/2.0;
+    translation[0][3] = width;
+    translation[1][3] = height;
     translation[2][3] = 0;
 
     return translation;

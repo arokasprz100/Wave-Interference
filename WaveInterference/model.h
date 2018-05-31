@@ -21,8 +21,6 @@ class Model : public QObject
 public:
     Model(MainWindow& view, unsigned width = 30, unsigned height = 30);
 
-    void print_lines();
-
     void repaint();
 
 private:

@@ -22,36 +22,6 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
 }
 
 
-void Model::print_lines()
-{
-    QGraphicsScene& draw_interface = *m_view.access_ui().graphicsView->scene();
-    for(unsigned i = 0; i< m_points.size() - 1; ++i){
-        for(unsigned j = 0; j < m_points[i].size() - 1; ++j){
-            QPoint line_start(m_points[i][j][0], m_points[i][j][1]);
-            QPoint line_end1 (m_points[i+1][j][0], m_points[i+1][j][1]);
-            QPoint line_end2 (m_points[i][j+1][0], m_points[i][j+1][1]);
-            draw_interface.addLine(QLine(line_start, line_end1), QPen(Qt::black));
-            draw_interface.addLine(QLine(line_start, line_end2), QPen(Qt::black));
-        }
-    }
-
-    for (unsigned i = 0; i<m_points.size() - 1; ++i )
-    {
-        QPoint line_start(m_points[m_width_in_points - 1][i][0], m_points[m_width_in_points - 1][i][1]);
-        QPoint line_end1 (m_points[m_width_in_points - 1][i+1][0], m_points[m_width_in_points - 1][i+1][1]);
-        draw_interface.addLine(QLine(line_start, line_end1), QPen(Qt::black));
-
-    }
-
-    for (unsigned i = 0; i<m_points.size() - 1; ++i )
-    {
-        QPoint line_start(m_points[i][m_height_in_points-1][0], m_points[i][m_height_in_points-1][1]);
-        QPoint line_end1 (m_points[i+1][m_height_in_points-1][0], m_points[i+1][m_height_in_points-1][1]);
-        draw_interface.addLine(QLine(line_start, line_end1), QPen(Qt::black));
-
-    }
-}
-
 void Model::set_draw_size(QSize draw_size){
     m_draw_size = draw_size;
     m_draw_size.setHeight(m_draw_size.height());
@@ -65,8 +35,10 @@ void Model::repaint()
     QGraphicsScene& draw_interface = *m_view.access_ui().graphicsView->scene();
     m_bitmap.fill();
     draw_interface.clear();
+    double bitmap_width = m_bitmap.width();
+    double bitmap_height = m_bitmap.height();
     vector_vector transformed_points;
-    Matrix transformations = get_scaling_matrix()*Translate(1000,1000)*get_rotation_matrix(x_rotation, y_rotation, z_rotation) * Translate(-500,-500);
+    Matrix transformations = get_scaling_matrix()*Translate(-(-bitmap_width/2.0), -(-bitmap_height/2.0))* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*10.0 - 10), -static_cast<double>(m_height_in_points*10.0 - 10));
     for(unsigned i = 0; i< m_points.size(); ++i){
         transformed_points.emplace_back();
         for(unsigned j = 0; j < m_points[i].size(); ++j)
@@ -92,8 +64,28 @@ void Model::repaint()
             m_painter->drawLine(line_start, line_end2);
         }
     }
+
+    for (unsigned i = 0; i<m_points.size() - 1; ++i )
+    {
+        QPoint line_start(transformed_points[m_width_in_points - 1][i][0], transformed_points[m_width_in_points - 1][i][1]);
+        QPoint line_end1 (transformed_points[m_width_in_points - 1][i+1][0], transformed_points[m_width_in_points - 1][i+1][1]);
+        m_painter->drawLine(line_start, line_end1);
+
+    }
+
+    for (unsigned i = 0; i<m_points.size() - 1; ++i )
+    {
+        QPoint line_start(transformed_points[i][m_height_in_points-1][0], transformed_points[i][m_height_in_points-1][1]);
+        QPoint line_end1 (transformed_points[i+1][m_height_in_points-1][0], transformed_points[i+1][m_height_in_points-1][1]);
+        m_painter->drawLine(line_start, line_end1);
+
+    }
+
+
+    m_painter->drawLine(QPoint(bitmap_width,0), QPoint(bitmap_width, bitmap_height));
     draw_interface.setSceneRect(0,0,m_draw_size.width()-2,m_draw_size.height()-2);
     draw_interface.addPixmap(m_bitmap.scaled(m_draw_size));
+
 }
 
 void Model::start_animation(){
