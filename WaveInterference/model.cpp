@@ -1,8 +1,9 @@
 #include "model.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 
 Model::Model(MainWindow& view, unsigned width, unsigned height):
-    m_width_in_points(width), m_height_in_points(height), m_view(view)
+    m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
 {
 
     for(unsigned i = 0; i < width; ++i){
@@ -48,4 +49,8 @@ void Model::set_draw_size(QSize draw_size){
     m_draw_size = draw_size;
     m_view.access_ui().graphicsView->scene()->clear();
     print_lines();
+}
+
+void Model::start_animation(){
+    std::cout<<"started animation"<<std::endl;
 }
