@@ -1,7 +1,7 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <QPoint>
+#include "vector4.h"
 
 class Point
 {
@@ -10,6 +10,8 @@ public:
         m_x(x), m_y(y) {}
 
     double& operator[](int index);
+
+    Vector4 return_as_vector() const;
 
 private:
     double m_x, m_y, m_z;

@@ -27,12 +27,18 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     point.cpp \
-    model.cpp
+    model.cpp \
+    matrix.cpp \
+    vector4.cpp \
+    transformations.cpp
 
 HEADERS += \
         mainwindow.h \
     point.h \
-    model.h
+    model.h \
+    matrix.h \
+    vector4.h \
+    transformations.h
 
 FORMS += \
         mainwindow.ui
