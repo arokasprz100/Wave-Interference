@@ -48,7 +48,7 @@ Matrix get_scaling_matrix()
 {
     Matrix scaling_matrix;
 
-    double scale = 0.001;
+    double scale = 1;
 
     scaling_matrix[0][0] = scale;
     scaling_matrix[1][1] = scale;

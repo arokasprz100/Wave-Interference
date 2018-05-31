@@ -3,17 +3,20 @@
 #include "matrix.h"
 #include "transformations.h"
 #include <iostream>
+#include <QPainter>
 
 Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
 {
-
+    m_bitmap = QPixmap(1000,1000);
     for(unsigned i = 0; i < width; ++i){
         m_points.emplace_back();
         for(unsigned j = 0; j < height; ++j){
             m_points[i].emplace_back(i*20,j*20);
         }
     }
+    m_painter = new QPainter(&m_bitmap);
+    m_painter->setPen(QPen(Qt::black));
 }
 
 
@@ -56,9 +59,10 @@ void Model::set_draw_size(QSize draw_size){
 void Model::repaint()
 {
     QGraphicsScene& draw_interface = *m_view.access_ui().graphicsView->scene();
+    m_bitmap.fill();
     draw_interface.clear();
     vector_vector transformed_points;
-    Matrix transformations = get_scaling_matrix()*get_rotation_matrix(x_rotation, y_rotation, z_rotation)* get_centering_matrix(m_width_in_points*20, m_height_in_points*20);
+    Matrix transformations = get_scaling_matrix()*get_rotation_matrix(x_rotation, y_rotation, z_rotation)/* * get_centering_matrix(m_width_in_points*20, m_height_in_points*20)*/;
     for(unsigned i = 0; i< m_points.size(); ++i){
         transformed_points.emplace_back();
         for(unsigned j = 0; j < m_points[i].size(); ++j)
@@ -71,7 +75,6 @@ void Model::repaint()
             transformations.print();
         }
     }
-
     for(unsigned i = 0; i< transformed_points.size() - 1; ++i)
     {
 
@@ -80,10 +83,12 @@ void Model::repaint()
             QPoint line_start(transformed_points[i][j][0], transformed_points[i][j][1]);
             QPoint line_end1 (transformed_points[i+1][j][0], transformed_points[i+1][j][1]);
             QPoint line_end2 (transformed_points[i][j+1][0], transformed_points[i][j+1][1]);
-            draw_interface.addLine(QLine(line_start, line_end1), QPen(Qt::black));
-            draw_interface.addLine(QLine(line_start, line_end2), QPen(Qt::black));
+
+            m_painter->drawLine(line_start, line_end1);
+            m_painter->drawLine(line_start, line_end2);
         }
     }
+    draw_interface.addPixmap(m_bitmap);
 }
 
 void Model::start_animation(){
