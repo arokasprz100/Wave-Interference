@@ -12,7 +12,7 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
     for(unsigned i = 0; i < width; ++i){
         m_points.emplace_back();
         for(unsigned j = 0; j < height; ++j){
-            m_points[i].emplace_back(i*20,j*20);
+            m_points[i].push_back(Point(i*20,j*20));
         }
     }
     m_painter = new QPainter(&m_bitmap);
@@ -75,12 +75,14 @@ void Model::repaint()
             transformed_points[i][j] = transformations * transformed_points[i][j];
             for (int k = 0; k < 3; ++k)
                 transformed_points[i][j][k] /= transformed_points[i][j][3];
+            transformed_points[i][j].print();
         }
+
     }
-    for(unsigned i = 0; i< transformed_points.size() - 1; ++i)
+    for(unsigned i = 0; i< m_points.size() - 1; ++i)
     {
 
-        for(unsigned j = 0; j < transformed_points.size() - 1; ++j)
+        for(unsigned j = 0; j < m_points.size() - 1; ++j)
         {
             QPoint line_start(transformed_points[i][j][0], transformed_points[i][j][1]);
             QPoint line_end1 (transformed_points[i+1][j][0], transformed_points[i+1][j][1]);

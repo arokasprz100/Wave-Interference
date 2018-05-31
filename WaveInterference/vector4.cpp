@@ -10,8 +10,11 @@ Vector4::Vector4()
 
 void Vector4::print() const
 {
-    for (int i = 0; i< 4; ++i)
+    std::cout<<std::endl;
+    std::cout<<"_"<<std::endl;
+    for (int i = 0; i< 3; ++i)
         std::cout << m_vector_data[i] <<std::endl;
+    std::cout<<"_"<<std::endl;
 }
 
 void Vector4::set(double x, double y, double z)
