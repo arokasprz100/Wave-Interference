@@ -8,6 +8,8 @@
 #include "vector4.h"
 #include <QPixmap>
 
+class QPainter;
+
 using point_vector = std::vector<std::vector<Point>>;
 using vector_vector = std::vector<std::vector<Vector4>>;
 
@@ -33,6 +35,7 @@ private:
     int& y_rotation;
     int& z_rotation;
     bool& is_animated;
+    QPainter* m_painter;
 
 public slots:
     void set_draw_size(QSize draw_size);
