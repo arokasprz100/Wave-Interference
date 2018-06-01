@@ -9,11 +9,14 @@
 Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
 {
-    m_bitmap = QPixmap(1000,1000);
+    m_pixmap_size = QSize(1400,1400);
+    m_bitmap = QPixmap(m_pixmap_size);
+    m_point_width_modifier = (m_pixmap_size.width()-200) / static_cast<double>(m_width_in_points);
+    m_point_height_modifier = (m_pixmap_size.height()-200) / static_cast<double>(m_height_in_points);
     for(unsigned i = 0; i < width; ++i){
         m_points.emplace_back();
         for(unsigned j = 0; j < height; ++j){
-            m_points[i].push_back(Point(i*20,j*20));
+            m_points[i].push_back(Point(i*m_point_width_modifier ,j*m_point_height_modifier));
         }
     }
     m_painter = new QPainter(&m_bitmap);
@@ -41,7 +44,7 @@ void Model::repaint()
     double bitmap_width = m_bitmap.width();
     double bitmap_height = m_bitmap.height();
     vector_vector transformed_points;
-    Matrix transformations = get_perspective_matrix()* get_scaling_matrix()*Translate(-(-bitmap_width/2.0), -(-bitmap_height/2.0))* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*10.0 - 10), -static_cast<double>(m_height_in_points*10.0 - 10));
+    Matrix transformations = get_perspective_matrix()* get_scaling_matrix()*Translate(-(-bitmap_width/2.0), -(-bitmap_height/2.0))* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
     for(unsigned i = 0; i< m_points.size(); ++i){
         transformed_points.emplace_back();
         for(unsigned j = 0; j < m_points[i].size(); ++j)
@@ -50,7 +53,7 @@ void Model::repaint()
             transformed_points[i][j] = transformations * transformed_points[i][j];
             for (int k = 0; k < 3; ++k)
                 transformed_points[i][j][k] /= transformed_points[i][j][3];
-            transformed_points[i][j].print();
+            //transformed_points[i][j].print();
         }
 
     }
@@ -92,7 +95,7 @@ void Model::repaint()
 }
 
 void Model::start_animation(){
-    m_timer->start(100);
+    m_timer->start(50);
 }
 
 void Model::stop_animation(){

@@ -19,7 +19,7 @@ class Model : public QObject
     Q_OBJECT
 
 public:
-    Model(MainWindow& view, unsigned width = 30, unsigned height = 30);
+    Model(MainWindow& view, unsigned width = 70, unsigned height = 70);
 
     void repaint();
 
@@ -35,6 +35,9 @@ private:
     bool& is_animated;
     QPainter* m_painter;
     QTimer* m_timer;
+    QSize m_pixmap_size;
+    double m_point_width_modifier;
+    double m_point_height_modifier;
 
 public slots:
     void set_draw_size(QSize draw_size);
