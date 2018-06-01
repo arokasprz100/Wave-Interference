@@ -39,6 +39,7 @@ public slots:
     void set_draw_size(QSize draw_size);
     void start_animation();
     void redraw();
+    void sine_calc();
 };
 
 #endif // MODEL_H
