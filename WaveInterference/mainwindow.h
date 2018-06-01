@@ -38,6 +38,7 @@ signals:
     void next();
     void previous();
     void start_animation();
+    void stop_animation();
     void redraw();
 
 public slots:
@@ -45,6 +46,8 @@ public slots:
     void y_rotated(int rcv);
     void x_rotated(int rcv);
     void start_clicked();
+    void next_clicked();
+    void previous_clicked();
 };
 
 #endif // MAINWINDOW_H
