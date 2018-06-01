@@ -68,5 +68,14 @@ void MainWindow::start_clicked(){
         ui->z_bar->setDisabled(false);
         ui->m_animation->setText("Start");
         is_animated=false;
+        emit stop_animation();
     }
+}
+
+void MainWindow::next_clicked(){
+    emit next();
+}
+
+void MainWindow::previous_clicked(){
+    emit previous();
 }

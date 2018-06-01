@@ -19,6 +19,8 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_painter = new QPainter(&m_bitmap);
     m_painter->setPen(QPen(Qt::black, 2));
     m_draw_size = (view.access_ui()).graphicsView->size();
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(sine_calc()));
     repaint();
 }
 
@@ -90,23 +92,31 @@ void Model::repaint()
 }
 
 void Model::start_animation(){
-    std::cout<<"started animation"<<std::endl;
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(sine_calc()));
-    timer->start(100);
+    m_timer->start(100);
+}
+
+void Model::stop_animation(){
+    m_timer->stop();
 }
 
 void Model::redraw(){
     repaint();
 }
 
-void Model::sine_calc()
+void Model::sine_calc(int calc)
 {
     static int k = 0;
-    k++;
+    k+=calc;
     for (unsigned i = 0; i < m_points.size(); ++i)
         for (unsigned j = 0; j < m_points.size(); ++j)
-            m_points[i][j][2] = 10 * sin(k + sqrt(m_points[i][j][0] * m_points[i][j][0] + m_points[i][j][1]*m_points[i][j][1]));
+            m_points[i][j][2] = 5 * sin(k + sqrt(m_points[i][j][0] * m_points[i][j][0] + m_points[i][j][1]*m_points[i][j][1]));
     redraw();
+}
 
+void Model::next(){
+    sine_calc();
+}
+
+void Model::previous(){
+    sine_calc(-1);
 }

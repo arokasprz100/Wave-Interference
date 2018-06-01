@@ -34,12 +34,16 @@ private:
     int& z_rotation;
     bool& is_animated;
     QPainter* m_painter;
+    QTimer* m_timer;
 
 public slots:
     void set_draw_size(QSize draw_size);
     void start_animation();
+    void stop_animation();
+    void next();
+    void previous();
     void redraw();
-    void sine_calc();
+    void sine_calc(int calc = 1);
 };
 
 #endif // MODEL_H

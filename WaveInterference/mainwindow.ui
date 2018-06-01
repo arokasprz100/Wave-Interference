@@ -326,11 +326,45 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>m_previous</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>previous_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>914</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>916</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_next</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>next_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>990</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1028</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>z_rotated(int)</slot>
   <slot>y_rotated(int)</slot>
   <slot>x_rotated(int)</slot>
   <slot>start_clicked()</slot>
+  <slot>previous_clicked()</slot>
+  <slot>next_clicked()</slot>
  </slots>
 </ui>
