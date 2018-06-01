@@ -4,7 +4,7 @@
 #include "transformations.h"
 #include <iostream>
 #include <QPainter>
-#include <QTimer>
+
 
 Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
@@ -19,6 +19,10 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_painter = new QPainter(&m_bitmap);
     m_painter->setPen(QPen(Qt::black, 2));
     m_draw_size = (view.access_ui()).graphicsView->size();
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(sine_calc()));
+
     repaint();
 }
 
@@ -39,7 +43,7 @@ void Model::repaint()
     double bitmap_width = m_bitmap.width();
     double bitmap_height = m_bitmap.height();
     vector_vector transformed_points;
-    Matrix transformations = get_perspective_matrix()* get_scaling_matrix()*Translate(-(-bitmap_width/2.0), -(-bitmap_height/2.0))* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*10.0 - 10), -static_cast<double>(m_height_in_points*10.0 - 10));
+    Matrix transformations = get_perspective_matrix()*Translate(-(-bitmap_width/2.0), -(-bitmap_height/2.0))* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*10 - 10), -static_cast<double>(m_height_in_points*10 - 10));
     for(unsigned i = 0; i< m_points.size(); ++i){
         transformed_points.emplace_back();
         for(unsigned j = 0; j < m_points[i].size(); ++j)
@@ -91,9 +95,13 @@ void Model::repaint()
 
 void Model::start_animation(){
     std::cout<<"started animation"<<std::endl;
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(sine_calc()));
     timer->start(100);
+}
+
+void Model::stop_animation()
+{
+    std::cout<<"stopped animation"<<std::endl;
+    timer->stop();
 }
 
 void Model::redraw(){
@@ -105,8 +113,11 @@ void Model::sine_calc()
     static int k = 0;
     k++;
     for (unsigned i = 0; i < m_points.size(); ++i)
-        for (unsigned j = 0; j < m_points.size(); ++j)
-            m_points[i][j][2] = 10 * sin(k + sqrt(m_points[i][j][0] * m_points[i][j][0] + m_points[i][j][1]*m_points[i][j][1]));
+        for (unsigned j = 0; j < m_points.size(); ++j){
+            double distance_x = (m_points[i][j][0] - m_width_in_points*10) * (m_points[i][j][0] - m_width_in_points*10);
+            double distance_y = (m_points[i][j][1] - m_height_in_points*10) * (m_points[i][j][1] - m_height_in_points*10);
+            m_points[i][j][2] = 50 * sin(k - 0.05*sqrt(distance_x + distance_y));
+        }
     redraw();
 
 }

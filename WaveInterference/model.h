@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 #include "vector4.h"
 #include <QPixmap>
+#include <QTimer>
 
 class QPainter;
 
@@ -34,10 +35,12 @@ private:
     int& z_rotation;
     bool& is_animated;
     QPainter* m_painter;
+    QTimer *timer;
 
 public slots:
     void set_draw_size(QSize draw_size);
     void start_animation();
+    void stop_animation();
     void redraw();
     void sine_calc();
 };
