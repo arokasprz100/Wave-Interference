@@ -111,8 +111,11 @@ void Model::sine_calc(int calc)
     static int k = 0;
     k+=calc;
     for (unsigned i = 0; i < m_points.size(); ++i)
-        for (unsigned j = 0; j < m_points.size(); ++j)
-            m_points[i][j][2] = 5 * sin(k + sqrt(m_points[i][j][0] * m_points[i][j][0] + m_points[i][j][1]*m_points[i][j][1]));
+        for (unsigned j = 0; j < m_points.size(); ++j){
+            double distance_x = (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.) * (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.);
+            double distance_y = (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.) * (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.);
+            m_points[i][j][2] = 20 * sin(k - 0.05*sqrt(distance_x + distance_y));
+         }
     redraw();
 }
 
