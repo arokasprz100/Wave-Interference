@@ -49,6 +49,8 @@ public slots:
     void previous();
     void redraw();
     void sine_calc(int calc = 1);
+    void model_clipboard();
+    void model_save();
 };
 
 #endif // MODEL_H

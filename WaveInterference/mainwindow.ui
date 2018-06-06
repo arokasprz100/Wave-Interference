@@ -421,6 +421,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>m_clipboard</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>copy_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>988</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>939</x>
+     <y>337</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_save</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>save_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>924</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>932</x>
+     <y>222</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>z_rotated(int)</slot>
@@ -431,5 +463,7 @@
   <slot>next_clicked()</slot>
   <slot>add_clicked()</slot>
   <slot>delete_clicked()</slot>
+  <slot>copy_clicked()</slot>
+  <slot>save_clicked()</slot>
  </slots>
 </ui>

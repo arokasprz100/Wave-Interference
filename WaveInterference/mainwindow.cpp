@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     x_rotation = y_rotation = z_rotation = 0;
     is_animated = false;
-    is_source_triggered = false;
     ui->graphicsView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
@@ -82,14 +81,18 @@ void MainWindow::previous_clicked(){
     emit previous();
 }
 
-void MainWindow::source_trigger(int val){
-    is_source_triggered = val;
-}
-
 void MainWindow::add_clicked(){
 
 }
 
 void MainWindow::delete_clicked(){
 
+}
+
+void MainWindow::copy_clicked(){
+    emit model_clipboard();
+}
+
+void MainWindow::save_clicked(){
+    emit model_save();
 }

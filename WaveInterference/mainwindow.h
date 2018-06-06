@@ -32,7 +32,6 @@ private:
     void resizeEvent(QResizeEvent* event);
     int x_rotation, y_rotation, z_rotation;
     bool is_animated;
-    bool is_source_triggered;
 
 signals:
     void window_resized(QSize new_size);
@@ -41,6 +40,8 @@ signals:
     void start_animation();
     void stop_animation();
     void redraw();
+    void model_clipboard();
+    void model_save();
 
 public slots:
     void z_rotated(int rcv);
@@ -51,6 +52,8 @@ public slots:
     void previous_clicked();
     void add_clicked();
     void delete_clicked();
+    void copy_clicked();
+    void save_clicked();
 };
 
 #endif // MAINWINDOW_H
