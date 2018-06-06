@@ -4,7 +4,7 @@
 #include "transformations.h"
 #include <iostream>
 #include <QPainter>
-#include <QTimer>
+
 
 Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
@@ -21,7 +21,9 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
     }
     m_painter = new QPainter(&m_bitmap);
     m_painter->setPen(QPen(Qt::black, 2));
+    m_painter->translate(m_bitmap.rect().center());
     m_draw_size = (view.access_ui()).graphicsView->size();
+
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(sine_calc()));
     repaint();
@@ -44,7 +46,8 @@ void Model::repaint()
     double bitmap_width = m_bitmap.width();
     double bitmap_height = m_bitmap.height();
     vector_vector transformed_points;
-    Matrix transformations = get_perspective_matrix()* get_scaling_matrix()*Translate(-(-bitmap_width/2.0), -(-bitmap_height/2.0))* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
+    Matrix transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
+
     for(unsigned i = 0; i< m_points.size(); ++i){
         transformed_points.emplace_back();
         for(unsigned j = 0; j < m_points[i].size(); ++j)
@@ -53,7 +56,6 @@ void Model::repaint()
             transformed_points[i][j] = transformations * transformed_points[i][j];
             for (int k = 0; k < 3; ++k)
                 transformed_points[i][j][k] /= transformed_points[i][j][3];
-            //transformed_points[i][j].print();
         }
 
     }
@@ -95,12 +97,14 @@ void Model::repaint()
 }
 
 void Model::start_animation(){
+
     m_timer->start(50);
 }
 
 void Model::stop_animation(){
     m_timer->stop();
 }
+
 
 void Model::redraw(){
     repaint();
@@ -112,6 +116,7 @@ void Model::sine_calc(int calc)
     k+=calc;
     for (unsigned i = 0; i < m_points.size(); ++i)
         for (unsigned j = 0; j < m_points.size(); ++j){
+
             double distance_x = (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.) * (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.);
             double distance_y = (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.) * (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.);
             m_points[i][j][2] = 20 * sin(k - 0.05*sqrt(distance_x + distance_y));

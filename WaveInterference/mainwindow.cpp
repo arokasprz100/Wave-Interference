@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     is_animated = false;
     ui->graphicsView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow()

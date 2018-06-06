@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 #include "vector4.h"
 #include <QPixmap>
+#include <QTimer>
 
 class QPainter;
 
@@ -19,7 +20,7 @@ class Model : public QObject
     Q_OBJECT
 
 public:
-    Model(MainWindow& view, unsigned width = 70, unsigned height = 70);
+    Model(MainWindow& view, unsigned width = 80, unsigned height = 80);
 
     void repaint();
 
@@ -34,6 +35,7 @@ private:
     int& z_rotation;
     bool& is_animated;
     QPainter* m_painter;
+
     QTimer* m_timer;
     QSize m_pixmap_size;
     double m_point_width_modifier;
