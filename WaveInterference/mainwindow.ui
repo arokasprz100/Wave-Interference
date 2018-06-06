@@ -27,7 +27,7 @@
        <widget class="QGraphicsView" name="graphicsView"/>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -233,6 +233,37 @@
           </property>
          </spacer>
         </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QPushButton" name="m_add_button">
+            <property name="text">
+             <string>Add Source</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="m_delete_button">
+            <property name="text">
+             <string>Delete Sources</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
      </layout>
@@ -245,7 +276,7 @@
      <x>0</x>
      <y>0</y>
      <width>1066</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -269,8 +300,8 @@
    <slot>start_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>947</x>
-     <y>169</y>
+     <x>1051</x>
+     <y>155</y>
     </hint>
     <hint type="destinationlabel">
      <x>1011</x>
@@ -285,8 +316,8 @@
    <slot>x_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>923</x>
-     <y>488</y>
+     <x>1050</x>
+     <y>397</y>
     </hint>
     <hint type="destinationlabel">
      <x>907</x>
@@ -301,8 +332,8 @@
    <slot>y_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>984</x>
-     <y>508</y>
+     <x>1050</x>
+     <y>423</y>
     </hint>
     <hint type="destinationlabel">
      <x>922</x>
@@ -317,8 +348,8 @@
    <slot>z_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1019</x>
-     <y>534</y>
+     <x>1050</x>
+     <y>449</y>
     </hint>
     <hint type="destinationlabel">
      <x>998</x>
@@ -333,8 +364,8 @@
    <slot>previous_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>914</x>
-     <y>209</y>
+     <x>963</x>
+     <y>188</y>
     </hint>
     <hint type="destinationlabel">
      <x>916</x>
@@ -349,12 +380,44 @@
    <slot>next_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>990</x>
-     <y>204</y>
+     <x>1050</x>
+     <y>188</y>
     </hint>
     <hint type="destinationlabel">
      <x>1028</x>
      <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>add_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>981</x>
+     <y>529</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>952</x>
+     <y>479</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delete_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>918</x>
+     <y>564</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>975</x>
+     <y>625</y>
     </hint>
    </hints>
   </connection>
@@ -366,5 +429,7 @@
   <slot>start_clicked()</slot>
   <slot>previous_clicked()</slot>
   <slot>next_clicked()</slot>
+  <slot>add_clicked()</slot>
+  <slot>delete_clicked()</slot>
  </slots>
 </ui>

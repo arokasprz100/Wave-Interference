@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QGraphicsScene>
+#include <QMouseEvent>
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     x_rotation = y_rotation = z_rotation = 0;
     is_animated = false;
+    is_source_triggered = false;
     ui->graphicsView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
@@ -78,4 +80,16 @@ void MainWindow::next_clicked(){
 
 void MainWindow::previous_clicked(){
     emit previous();
+}
+
+void MainWindow::source_trigger(int val){
+    is_source_triggered = val;
+}
+
+void MainWindow::add_clicked(){
+
+}
+
+void MainWindow::delete_clicked(){
+
 }

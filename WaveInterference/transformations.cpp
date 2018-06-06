@@ -67,7 +67,7 @@ Matrix get_perspective_matrix()
         perspective_cast_matrix[i][i] = 1.0;
 
 
-    perspective_cast_matrix[3][2] = 0.001;
+    perspective_cast_matrix[3][2] = 0.0013;
 
     return perspective_cast_matrix;
 }

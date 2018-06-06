@@ -20,7 +20,7 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
         }
     }
     m_painter = new QPainter(&m_bitmap);
-    m_painter->setPen(QPen(Qt::black, 2));
+    m_painter->setPen(QPen(Qt::black, 3));
     m_painter->translate(m_bitmap.rect().center());
     m_draw_size = (view.access_ui()).graphicsView->size();
 
@@ -119,7 +119,7 @@ void Model::sine_calc(int calc)
 
             double distance_x = (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.) * (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.);
             double distance_y = (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.) * (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.);
-            m_points[i][j][2] = 20 * sin(k - 0.05*sqrt(distance_x + distance_y));
+            m_points[i][j][2] = 40 * sin(k - 0.05*sqrt(distance_x + distance_y));
          }
     redraw();
 }

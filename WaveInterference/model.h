@@ -20,7 +20,7 @@ class Model : public QObject
     Q_OBJECT
 
 public:
-    Model(MainWindow& view, unsigned width = 70, unsigned height = 70);
+    Model(MainWindow& view, unsigned width = 40, unsigned height = 40);
 
     void repaint();
 
