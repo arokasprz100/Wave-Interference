@@ -44,6 +44,8 @@ signals:
     void redraw();
     void source_added(int x_pos,int y_pos, double amplitude, double frequency);
     void sources_deleted();
+    void model_clipboard();
+    void model_save();
 
 public slots:
     void z_rotated(int rcv);
@@ -54,6 +56,8 @@ public slots:
     void previous_clicked();
     void add_clicked();
     void delete_clicked();
+    void copy_clicked();
+    void save_clicked();
 };
 
 #endif // MAINWINDOW_H

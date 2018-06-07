@@ -4,7 +4,8 @@
 #include "transformations.h"
 #include <iostream>
 #include <QPainter>
-
+#include <QClipboard>
+#include <QFileDialog>
 
 Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
@@ -149,4 +150,14 @@ void Model::sources_deleted(){
         }
     }
     m_ampfreq.clear();
+}
+
+void Model::model_clipboard(){
+    QClipboard* clipboard = QApplication::clipboard();
+    clipboard->setPixmap(m_bitmap);
+}
+
+void Model::model_save(){
+    QString filename = QFileDialog::getSaveFileName();
+    m_bitmap.save(filename);
 }

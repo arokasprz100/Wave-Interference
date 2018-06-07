@@ -100,3 +100,11 @@ void MainWindow::add_clicked(){
 void MainWindow::delete_clicked(){
     emit sources_deleted();
 }
+
+void MainWindow::copy_clicked(){
+    emit model_clipboard();
+}
+
+void MainWindow::save_clicked(){
+    emit model_save();
+}

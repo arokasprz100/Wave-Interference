@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     Model model(w);
-    //model.print_points(*w.access_ui().graphicsView->scene());
     QObject::connect(&w, SIGNAL(window_resized(QSize)),
                      &model, SLOT(set_draw_size(QSize)));
     QObject::connect(&w, SIGNAL(start_animation()),
@@ -29,6 +28,10 @@ int main(int argc, char *argv[])
                      &model, SLOT(source_added(int, int, double, double)));
     QObject::connect(&w, SIGNAL(sources_deleted()),
                      &model, SLOT(sources_deleted()));
+    QObject::connect(&w, SIGNAL(model_clipboard()),
+                     &model, SLOT(model_clipboard()));
+    QObject::connect(&w, SIGNAL(model_save()),
+                     &model, SLOT(model_save()));
 
     return a.exec();
 }

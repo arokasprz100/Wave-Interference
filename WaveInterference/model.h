@@ -52,6 +52,8 @@ public slots:
     void sine_calc(int calc = 1);
     void source_added(int x_pos, int y_pos, double amplitude, double frequency);
     void sources_deleted();
+    void model_clipboard();
+    void model_save();
 };
 
 #endif // MODEL_H
