@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
                      &model, SLOT(start_animation()));
     QObject::connect(&w, SIGNAL(redraw()),
                      &model, SLOT(redraw()));
+    QObject::connect(&w, SIGNAL(calculate_matrices()),
+                     &model, SLOT(calculate_matrices()));
     QObject::connect(&w, SIGNAL(stop_animation()),
                      &model, SLOT(stop_animation()));
     QObject::connect(&w, SIGNAL(previous()),

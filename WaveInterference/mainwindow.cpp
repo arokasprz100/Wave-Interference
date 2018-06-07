@@ -35,17 +35,17 @@ void MainWindow::print_receivers(){
 
 void MainWindow::z_rotated(int rcv){
     z_rotation = rcv;
-    emit redraw();
+    emit calculate_matrices();
 }
 
 void MainWindow::y_rotated(int rcv){
     y_rotation = rcv;
-    emit redraw();
+    emit calculate_matrices();
 }
 
 void MainWindow::x_rotated(int rcv){
     x_rotation = rcv;
-    emit redraw();
+    emit calculate_matrices();
 }
 
 void MainWindow::start_clicked(){

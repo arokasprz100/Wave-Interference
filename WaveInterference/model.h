@@ -2,6 +2,7 @@
 #define MODEL_H
 
 #include "point.h"
+#include "matrix.h"
 #include <vector>
 #include <QGraphicsScene>
 #include "mainwindow.h"
@@ -36,6 +37,9 @@ private:
     bool& is_animated;
     QPainter* m_painter;
     std::vector<std::pair<double, double> > m_ampfreq;
+    std::vector<std::vector<QPoint>> m_points2D;
+
+    Matrix m_transformations;
 
     QTimer* m_timer;
     QSize m_pixmap_size;
@@ -54,6 +58,7 @@ public slots:
     void sources_deleted();
     void model_clipboard();
     void model_save();
+    void calculate_matrices();
 };
 
 #endif // MODEL_H
