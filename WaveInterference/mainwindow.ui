@@ -111,6 +111,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="m_print">
+            <property name="text">
+             <string>Print</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -291,9 +298,7 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../build-WaveInterference-Working-Debug/debug/qmake_qmake_immediate.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>m_animation</sender>
@@ -318,8 +323,8 @@
    <slot>x_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>965</x>
-     <y>359</y>
+     <x>1084</x>
+     <y>381</y>
     </hint>
     <hint type="destinationlabel">
      <x>267</x>
@@ -334,8 +339,8 @@
    <slot>y_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>965</x>
-     <y>381</y>
+     <x>1084</x>
+     <y>403</y>
     </hint>
     <hint type="destinationlabel">
      <x>267</x>
@@ -350,8 +355,8 @@
    <slot>z_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>965</x>
-     <y>403</y>
+     <x>1084</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
      <x>267</x>
@@ -398,8 +403,8 @@
    <slot>add_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>981</x>
-     <y>529</y>
+     <x>1085</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
      <x>952</x>
@@ -414,8 +419,8 @@
    <slot>delete_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>918</x>
-     <y>564</y>
+     <x>1085</x>
+     <y>535</y>
     </hint>
     <hint type="destinationlabel">
      <x>975</x>
@@ -430,8 +435,8 @@
    <slot>copy_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>988</x>
-     <y>306</y>
+     <x>1085</x>
+     <y>279</y>
     </hint>
     <hint type="destinationlabel">
      <x>939</x>
@@ -446,12 +451,28 @@
    <slot>save_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>924</x>
-     <y>266</y>
+     <x>1085</x>
+     <y>252</y>
     </hint>
     <hint type="destinationlabel">
      <x>932</x>
      <y>222</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_print</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>print_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1022</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1004</x>
+     <y>309</y>
     </hint>
    </hints>
   </connection>
@@ -467,5 +488,6 @@
   <slot>delete_clicked()</slot>
   <slot>copy_clicked()</slot>
   <slot>save_clicked()</slot>
+  <slot>print_clicked()</slot>
  </slots>
 </ui>

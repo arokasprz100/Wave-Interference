@@ -5,11 +5,15 @@
 #include <iostream>
 #include <QPainter>
 #include <QClipboard>
+#include <QThread>
 #include <QFileDialog>
+#include <QtPrintSupport/QPrintDialog>
+#include <QtPrintSupport/QPrinter>
 
 Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
 {
+    k=0;
     m_pixmap_size = QSize(1400,1400);
     m_bitmap = QPixmap(m_pixmap_size);
     m_point_width_modifier = (m_pixmap_size.width()-200) / static_cast<double>(m_width_in_points);
@@ -99,7 +103,7 @@ void Model::repaint()
 
 void Model::start_animation(){
 
-    m_timer->start(50);
+    m_timer->start(16);
 }
 
 void Model::stop_animation(){
@@ -111,19 +115,31 @@ void Model::redraw(){
     repaint();
 }
 
-void Model::sine_calc(int calc)
-{
-    static int k = 0;
-    k+=calc;
-    for (unsigned i = 0; i < m_points.size(); ++i)
-        for (unsigned j = 0; j < m_points.size(); ++j){
+void Model::thread_sine_calc(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to){
+    for (unsigned i = w_from; i < w_to; ++i)
+        for (unsigned j = h_from; j < h_to; ++j){
             m_points[i][j][2]=0;
             for(unsigned l = 0; l < m_points[i][j].distance.size(); ++l){
                 m_points[i][j][2]+=m_ampfreq[l].first*sin(k - m_ampfreq[l].second*0.05*m_points[i][j].distance[l]);
             }
          }
+}
+
+void Model::sine_calc(int calc)
+{
+    k+=calc;
+    QThread *thread1 = QThread::create([this]{thread_sine_calc(0,50,0,50);});
+    QThread *thread2 = QThread::create([this]{thread_sine_calc(50,100,0,50);});
+    QThread *thread3 = QThread::create([this]{thread_sine_calc(0,50,50,100);});
+    QThread *thread4 = QThread::create([this]{thread_sine_calc(50,100,50,100);});
+    thread1->start();
+    thread2->start();
+    thread3->start();
+    thread4->start();
     redraw();
 }
+
+
 
 void Model::next(){
     sine_calc();
@@ -160,4 +176,15 @@ void Model::model_clipboard(){
 void Model::model_save(){
     QString filename = QFileDialog::getSaveFileName();
     m_bitmap.save(filename);
+}
+
+
+void Model::print_frame(){
+    QPrinter printer;
+    if (QPrintDialog(&printer).exec() == QDialog::Accepted) {
+        QPainter painter(&printer);
+        painter.setRenderHint(QPainter::Antialiasing);
+        m_view.access_ui().graphicsView->scene()->render(&painter);
+    }
+     return;
 }

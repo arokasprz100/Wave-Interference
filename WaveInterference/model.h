@@ -20,7 +20,7 @@ class Model : public QObject
     Q_OBJECT
 
 public:
-    Model(MainWindow& view, unsigned width = 80, unsigned height = 80);
+    Model(MainWindow& view, unsigned width = 100, unsigned height = 100);
 
     void repaint();
 
@@ -36,11 +36,13 @@ private:
     bool& is_animated;
     QPainter* m_painter;
     std::vector<std::pair<double, double> > m_ampfreq;
+    void thread_sine_calc(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to);
 
     QTimer* m_timer;
     QSize m_pixmap_size;
     double m_point_width_modifier;
     double m_point_height_modifier;
+    int k;
 
 public slots:
     void set_draw_size(QSize draw_size);
@@ -54,6 +56,7 @@ public slots:
     void sources_deleted();
     void model_clipboard();
     void model_save();
+    void print_frame();
 };
 
 #endif // MODEL_H

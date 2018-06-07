@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
                      &model, SLOT(model_clipboard()));
     QObject::connect(&w, SIGNAL(model_save()),
                      &model, SLOT(model_save()));
+    QObject::connect(&w, SIGNAL(print_frame()),
+                     &model, SLOT(print_frame()));
 
     return a.exec();
 }

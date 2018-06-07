@@ -46,6 +46,7 @@ signals:
     void sources_deleted();
     void model_clipboard();
     void model_save();
+    void print_frame();
 
 public slots:
     void z_rotated(int rcv);
@@ -58,6 +59,7 @@ public slots:
     void delete_clicked();
     void copy_clicked();
     void save_clicked();
+    void print_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -108,3 +108,7 @@ void MainWindow::copy_clicked(){
 void MainWindow::save_clicked(){
     emit model_save();
 }
+
+void MainWindow::print_clicked(){
+    emit print_frame();
+}
