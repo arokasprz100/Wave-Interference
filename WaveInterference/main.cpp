@@ -25,6 +25,10 @@ int main(int argc, char *argv[])
                      &model, SLOT(previous()));
     QObject::connect(&w, SIGNAL(next()),
                      &model, SLOT(next()));
+    QObject::connect(&w, SIGNAL(source_added(int,int,double,double)),
+                     &model, SLOT(source_added(int, int, double, double)));
+    QObject::connect(&w, SIGNAL(sources_deleted()),
+                     &model, SLOT(sources_deleted()));
 
     return a.exec();
 }

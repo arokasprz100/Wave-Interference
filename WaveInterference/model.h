@@ -35,6 +35,7 @@ private:
     int& z_rotation;
     bool& is_animated;
     QPainter* m_painter;
+    std::vector<std::pair<double, double> > m_ampfreq;
 
     QTimer* m_timer;
     QSize m_pixmap_size;
@@ -49,6 +50,8 @@ public slots:
     void previous();
     void redraw();
     void sine_calc(int calc = 1);
+    void source_added(int x_pos, int y_pos, double amplitude, double frequency);
+    void sources_deleted();
 };
 
 #endif // MODEL_H

@@ -20,7 +20,7 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
         }
     }
     m_painter = new QPainter(&m_bitmap);
-    m_painter->setPen(QPen(Qt::black, 2));
+    m_painter->setPen(QPen(Qt::black, 3));
     m_painter->translate(m_bitmap.rect().center());
     m_draw_size = (view.access_ui()).graphicsView->size();
 
@@ -116,10 +116,10 @@ void Model::sine_calc(int calc)
     k+=calc;
     for (unsigned i = 0; i < m_points.size(); ++i)
         for (unsigned j = 0; j < m_points.size(); ++j){
-
-            double distance_x = (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.) * (m_points[i][j][0] - m_width_in_points*m_point_width_modifier/2.);
-            double distance_y = (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.) * (m_points[i][j][1] - m_height_in_points*m_point_height_modifier/2.);
-            m_points[i][j][2] = 20 * sin(k - 0.05*sqrt(distance_x + distance_y));
+            m_points[i][j][2]=0;
+            for(unsigned l = 0; l < m_points[i][j].distance.size(); ++l){
+                m_points[i][j][2]+=m_ampfreq[l].first*sin(k - m_ampfreq[l].second*0.05*m_points[i][j].distance[l]);
+            }
          }
     redraw();
 }
@@ -130,4 +130,23 @@ void Model::next(){
 
 void Model::previous(){
     sine_calc(-1);
+}
+
+void Model::source_added(int x_pos, int y_pos, double amplitude, double frequency){
+    for(unsigned i = 0 ; i < m_points.size(); ++i){
+        for(unsigned j = 0; j < m_points.size(); ++j){
+            m_points[i][j].add_source_dist(x_pos-100, y_pos-100);
+        }
+    }
+    std::cout<<amplitude<<" "<<frequency<<std::endl;
+    m_ampfreq.push_back(std::pair<double, double>(amplitude,frequency));
+}
+
+void Model::sources_deleted(){
+    for(unsigned i = 0 ; i < m_points.size(); ++i){
+        for(unsigned j = 0; j < m_points.size(); ++j){
+            m_points[i][j].clear_sources();
+        }
+    }
+    m_ampfreq.clear();
 }

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QGraphicsScene>
+#include <QMouseEvent>
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -79,4 +80,23 @@ void MainWindow::next_clicked(){
 
 void MainWindow::previous_clicked(){
     emit previous();
+}
+
+void MainWindow::add_clicked(){
+    dialog.show();
+    if(dialog.exec()){
+        int x_pos, y_pos;
+        double amplitude, frequency;
+        x_pos = dialog.get_x();
+        y_pos = dialog.get_y();
+        amplitude = dialog.get_amplitude();
+        frequency = dialog.get_frequency();
+        if((amplitude>0) && frequency>0 && x_pos>0 && y_pos>0){
+            emit source_added(x_pos,y_pos,amplitude,frequency);
+        }
+    }
+}
+
+void MainWindow::delete_clicked(){
+    emit sources_deleted();
 }

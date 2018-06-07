@@ -234,32 +234,18 @@
          </spacer>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <widget class="QLabel" name="m_source">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
+           <widget class="QPushButton" name="m_add_button">
+            <property name="text">
+             <string>Add Source</string>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="../build-WaveInterference-Working-Debug/debug/qmake_qmake_immediate.qrc">:/source.png</pixmap>
-            </property>
-            <property name="scaledContents">
-             <bool>true</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="m_delete_button">
+            <property name="text">
+             <string>Delete Sources</string>
             </property>
            </widget>
           </item>
@@ -405,6 +391,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>m_add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>add_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>981</x>
+     <y>529</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>952</x>
+     <y>479</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delete_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>918</x>
+     <y>564</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>975</x>
+     <y>625</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>z_rotated(int)</slot>
@@ -413,5 +431,7 @@
   <slot>start_clicked()</slot>
   <slot>previous_clicked()</slot>
   <slot>next_clicked()</slot>
+  <slot>add_clicked()</slot>
+  <slot>delete_clicked()</slot>
  </slots>
 </ui>

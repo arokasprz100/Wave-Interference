@@ -30,7 +30,8 @@ SOURCES += \
     model.cpp \
     matrix.cpp \
     vector4.cpp \
-    transformations.cpp
+    transformations.cpp \
+    customdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,10 +39,8 @@ HEADERS += \
     model.h \
     matrix.h \
     vector4.h \
-    transformations.h
+    transformations.h \
+    customdialog.h
 
 FORMS += \
         mainwindow.ui
-
-RESOURCES += \
-    source.png
