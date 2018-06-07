@@ -50,7 +50,7 @@ Matrix get_scaling_matrix()
 {
     Matrix scaling_matrix;
 
-    double scale = 1;
+    double scale = 1.0;
 
     scaling_matrix[0][0] = scale;
     scaling_matrix[1][1] = scale;
@@ -67,7 +67,7 @@ Matrix get_perspective_matrix()
         perspective_cast_matrix[i][i] = 1.0;
 
 
-    perspective_cast_matrix[3][2] = 0.0013;
+    perspective_cast_matrix[3][2] = 0.00015;
 
     return perspective_cast_matrix;
 }

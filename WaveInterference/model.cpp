@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrinter>
+#include <QVector>
 
 Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
@@ -20,10 +21,15 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_point_height_modifier = (m_pixmap_size.height()-200) / static_cast<double>(m_height_in_points);
     for(unsigned i = 0; i < width; ++i){
         m_points.emplace_back();
+        m_points2D.emplace_back();
         for(unsigned j = 0; j < height; ++j){
             m_points[i].push_back(Point(i*m_point_width_modifier ,j*m_point_height_modifier));
+            m_points2D[i].push_back(QPoint(0,0));
         }
     }
+
+    m_transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
+
     m_painter = new QPainter(&m_bitmap);
     m_painter->setPen(QPen(Qt::black, 3));
     m_painter->translate(m_bitmap.rect().center());
@@ -48,62 +54,67 @@ void Model::repaint()
     QGraphicsScene& draw_interface = *m_view.access_ui().graphicsView->scene();
     m_bitmap.fill();
     draw_interface.clear();
-    double bitmap_width = m_bitmap.width();
-    double bitmap_height = m_bitmap.height();
-    vector_vector transformed_points;
-    Matrix transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
 
-    for(unsigned i = 0; i< m_points.size(); ++i){
-        transformed_points.emplace_back();
-        for(unsigned j = 0; j < m_points[i].size(); ++j)
-        {
-            transformed_points[i].push_back(m_points[i][j].return_as_vector());
-            transformed_points[i][j] = transformations * transformed_points[i][j];
-            for (int k = 0; k < 3; ++k)
-                transformed_points[i][j][k] /= transformed_points[i][j][3];
-        }
+    QThread *thread1 = QThread::create([this]{thread_repaint(0,m_width_in_points/2,0,m_height_in_points/2);});
+    QThread *thread2 = QThread::create([this]{thread_repaint(m_width_in_points/2,m_width_in_points,0,m_height_in_points/2);});
+    QThread *thread3 = QThread::create([this]{thread_repaint(0,m_width_in_points/2,m_height_in_points/2,m_height_in_points);});
+    QThread *thread4 = QThread::create([this]{thread_repaint(m_width_in_points/2,m_width_in_points,m_height_in_points/2,m_height_in_points);});
+    thread1->start();
+    thread2->start();
+    thread3->start();
+    thread4->start();
+    thread1->wait();
+    thread2->wait();
+    thread3->wait();
+    thread4->wait();
 
-    }
-    for(unsigned i = 0; i< m_points.size() - 1; ++i)
-    {
-
-        for(unsigned j = 0; j < m_points.size() - 1; ++j)
-        {
-            QPoint line_start(transformed_points[i][j][0], transformed_points[i][j][1]);
-            QPoint line_end1 (transformed_points[i+1][j][0], transformed_points[i+1][j][1]);
-            QPoint line_end2 (transformed_points[i][j+1][0], transformed_points[i][j+1][1]);
-
-            m_painter->drawLine(line_start, line_end1);
-            m_painter->drawLine(line_start, line_end2);
-        }
-    }
-
-    for (unsigned i = 0; i<m_points.size() - 1; ++i )
-    {
-        QPoint line_start(transformed_points[m_width_in_points - 1][i][0], transformed_points[m_width_in_points - 1][i][1]);
-        QPoint line_end1 (transformed_points[m_width_in_points - 1][i+1][0], transformed_points[m_width_in_points - 1][i+1][1]);
-        m_painter->drawLine(line_start, line_end1);
-
-    }
-
-    for (unsigned i = 0; i<m_points.size() - 1; ++i )
-    {
-        QPoint line_start(transformed_points[i][m_height_in_points-1][0], transformed_points[i][m_height_in_points-1][1]);
-        QPoint line_end1 (transformed_points[i+1][m_height_in_points-1][0], transformed_points[i+1][m_height_in_points-1][1]);
-        m_painter->drawLine(line_start, line_end1);
-
-    }
-
-
-    m_painter->drawLine(QPoint(bitmap_width,0), QPoint(bitmap_width, bitmap_height));
     draw_interface.setSceneRect(0,0,m_draw_size.width()-2,m_draw_size.height()-2);
     draw_interface.addPixmap(m_bitmap.scaled(m_draw_size));
 
 }
 
+void Model::thread_repaint(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to){
+    vector_vector transformed_points;
+    unsigned how_much = w_to - w_from;
+    for(unsigned i = 0; i< how_much; ++i){
+        transformed_points.emplace_back();
+        for(unsigned j = 0; j < how_much; ++j)
+        {
+            transformed_points[i].push_back(m_points[i+w_from][j+h_from].return_as_vector());
+            transformed_points[i][j] = m_transformations * transformed_points[i][j];
+            for (int k = 0; k < 3; ++k)
+                transformed_points[i][j][k] /= transformed_points[i][j][3];
+
+            m_points2D[i+w_from][j+h_from].rx() = transformed_points[i][j][0];
+            m_points2D[i+w_from][j+h_from].ry() = transformed_points[i][j][1];
+        }
+
+    }
+    QVector<QPoint> lines_to_draw;
+    for(unsigned i = 0; i< how_much-1; ++i)
+    {
+        for(unsigned j = 0; j < how_much - 1; ++j)
+        {
+            lines_to_draw.push_back(m_points2D[i+w_from][j+h_from]);
+            lines_to_draw.push_back(m_points2D[i+w_from+1][j+h_from]);
+            lines_to_draw.push_back(m_points2D[i+w_from][j+h_from]);
+            lines_to_draw.push_back(m_points2D[i+w_from][j+1+h_from]);
+        }
+
+        lines_to_draw.push_back(m_points2D[m_width_in_points - 1][i]);
+        lines_to_draw.push_back(m_points2D[m_width_in_points - 1][i+1]);
+        lines_to_draw.push_back(m_points2D[i][m_height_in_points-1]);
+        lines_to_draw.push_back(m_points2D[i+1][m_height_in_points-1]);
+    }
+    m_painter->drawLines(lines_to_draw);
+    return;
+}
+
 void Model::start_animation(){
 
-    m_timer->start(16);
+
+    m_transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
+    m_timer->start(30);
 }
 
 void Model::stop_animation(){
@@ -128,14 +139,18 @@ void Model::thread_sine_calc(unsigned w_from, unsigned w_to, unsigned h_from,uns
 void Model::sine_calc(int calc)
 {
     k+=calc;
-    QThread *thread1 = QThread::create([this]{thread_sine_calc(0,50,0,50);});
-    QThread *thread2 = QThread::create([this]{thread_sine_calc(50,100,0,50);});
-    QThread *thread3 = QThread::create([this]{thread_sine_calc(0,50,50,100);});
-    QThread *thread4 = QThread::create([this]{thread_sine_calc(50,100,50,100);});
+    QThread *thread1 = QThread::create([this]{thread_sine_calc(0,m_width_in_points/2,0,m_height_in_points/2);});
+    QThread *thread2 = QThread::create([this]{thread_sine_calc(m_width_in_points/2,m_width_in_points,0,m_height_in_points/2);});
+    QThread *thread3 = QThread::create([this]{thread_sine_calc(0,m_width_in_points/2,m_height_in_points/2,m_height_in_points);});
+    QThread *thread4 = QThread::create([this]{thread_sine_calc(m_width_in_points/2,m_width_in_points,m_height_in_points/2,m_height_in_points);});
     thread1->start();
     thread2->start();
     thread3->start();
     thread4->start();
+    thread1->wait();
+    thread2->wait();
+    thread3->wait();
+    thread4->wait();
     redraw();
 }
 
@@ -178,7 +193,6 @@ void Model::model_save(){
     m_bitmap.save(filename);
 }
 
-
 void Model::print_frame(){
     QPrinter printer;
     if (QPrintDialog(&printer).exec() == QDialog::Accepted) {
@@ -187,4 +201,10 @@ void Model::print_frame(){
         m_view.access_ui().graphicsView->scene()->render(&painter);
     }
      return;
+}
+
+void Model::calculate_matrices()
+{
+    m_transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
+    redraw();
 }

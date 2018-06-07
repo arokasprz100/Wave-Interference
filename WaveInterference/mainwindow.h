@@ -47,6 +47,7 @@ signals:
     void model_clipboard();
     void model_save();
     void print_frame();
+    void calculate_matrices();
 
 public slots:
     void z_rotated(int rcv);

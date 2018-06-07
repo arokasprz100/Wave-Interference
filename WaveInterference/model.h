@@ -2,6 +2,7 @@
 #define MODEL_H
 
 #include "point.h"
+#include "matrix.h"
 #include <vector>
 #include <QGraphicsScene>
 #include "mainwindow.h"
@@ -20,7 +21,7 @@ class Model : public QObject
     Q_OBJECT
 
 public:
-    Model(MainWindow& view, unsigned width = 100, unsigned height = 100);
+    Model(MainWindow& view, unsigned width = 200, unsigned height = 200);
 
     void repaint();
 
@@ -37,6 +38,10 @@ private:
     QPainter* m_painter;
     std::vector<std::pair<double, double> > m_ampfreq;
     void thread_sine_calc(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to);
+    void thread_repaint(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to);
+    std::vector<std::vector<QPoint>> m_points2D;
+
+    Matrix m_transformations;
 
     QTimer* m_timer;
     QSize m_pixmap_size;
@@ -57,6 +62,7 @@ public slots:
     void model_clipboard();
     void model_save();
     void print_frame();
+    void calculate_matrices();
 };
 
 #endif // MODEL_H
