@@ -1,5 +1,6 @@
 #include "point.h"
 #include <stdexcept>
+#include <cmath>
 
 double& Point::operator[](int index){
     if(index==0)return m_x;
@@ -16,4 +17,13 @@ Vector4 Point::return_as_vector() const
     result[2] = m_z;
 
     return result;
+}
+
+void Point::add_source_dist(double x, double y){
+    double new_dist = sqrt( pow(m_x-x,2) + pow(m_y-y,2) );
+    distance.push_back(new_dist);
+}
+
+void Point::clear_sources(){
+    distance.clear();
 }

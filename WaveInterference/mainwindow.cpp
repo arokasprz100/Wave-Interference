@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     is_animated = false;
     ui->graphicsView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow()
@@ -82,11 +83,22 @@ void MainWindow::previous_clicked(){
 }
 
 void MainWindow::add_clicked(){
-
+    dialog.show();
+    if(dialog.exec()){
+        int x_pos, y_pos;
+        double amplitude, frequency;
+        x_pos = dialog.get_x();
+        y_pos = dialog.get_y();
+        amplitude = dialog.get_amplitude();
+        frequency = dialog.get_frequency();
+        if((amplitude>0) && frequency>0 && x_pos>0 && y_pos>0){
+            emit source_added(x_pos,y_pos,amplitude,frequency);
+        }
+    }
 }
 
 void MainWindow::delete_clicked(){
-
+    emit sources_deleted();
 }
 
 void MainWindow::copy_clicked(){

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1066</width>
-    <height>672</height>
+    <width>1098</width>
+    <height>623</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -275,8 +275,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1066</width>
-     <height>25</height>
+     <width>1098</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
@@ -291,7 +291,9 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../build-WaveInterference-Working-Debug/debug/qmake_qmake_immediate.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>m_animation</sender>
@@ -300,11 +302,11 @@
    <slot>start_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1051</x>
-     <y>155</y>
+     <x>948</x>
+     <y>129</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1011</x>
+     <x>267</x>
      <y>86</y>
     </hint>
    </hints>
@@ -316,12 +318,12 @@
    <slot>x_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1050</x>
-     <y>397</y>
+     <x>965</x>
+     <y>359</y>
     </hint>
     <hint type="destinationlabel">
-     <x>907</x>
-     <y>455</y>
+     <x>267</x>
+     <y>373</y>
     </hint>
    </hints>
   </connection>
@@ -332,12 +334,12 @@
    <slot>y_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1050</x>
-     <y>423</y>
+     <x>965</x>
+     <y>381</y>
     </hint>
     <hint type="destinationlabel">
-     <x>922</x>
-     <y>413</y>
+     <x>267</x>
+     <y>373</y>
     </hint>
    </hints>
   </connection>
@@ -348,12 +350,12 @@
    <slot>z_rotated(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1050</x>
-     <y>449</y>
+     <x>965</x>
+     <y>403</y>
     </hint>
     <hint type="destinationlabel">
-     <x>998</x>
-     <y>433</y>
+     <x>267</x>
+     <y>373</y>
     </hint>
    </hints>
   </connection>
@@ -364,11 +366,11 @@
    <slot>previous_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>963</x>
-     <y>188</y>
+     <x>949</x>
+     <y>157</y>
     </hint>
     <hint type="destinationlabel">
-     <x>916</x>
+     <x>267</x>
      <y>271</y>
     </hint>
    </hints>
@@ -380,11 +382,11 @@
    <slot>next_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1050</x>
-     <y>188</y>
+     <x>1035</x>
+     <y>157</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1028</x>
+     <x>267</x>
      <y>263</y>
     </hint>
    </hints>

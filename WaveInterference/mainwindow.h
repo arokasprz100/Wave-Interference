@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "customdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,7 @@ public:
     int& get_y_rotation(){return y_rotation;}
     int& get_z_rotation(){return z_rotation;}
     bool& get_is_animated(){return is_animated;}
+    CustomDialog dialog;
 
 private:
     Ui::MainWindow *ui;
@@ -40,6 +42,8 @@ signals:
     void start_animation();
     void stop_animation();
     void redraw();
+    void source_added(int x_pos,int y_pos, double amplitude, double frequency);
+    void sources_deleted();
     void model_clipboard();
     void model_save();
 
