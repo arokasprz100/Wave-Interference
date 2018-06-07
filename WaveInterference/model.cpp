@@ -83,14 +83,6 @@ void Model::repaint()
         lines_to_draw.push_back(m_points2D[i+1][m_height_in_points-1]);
     }
 
-//    for (unsigned i = 0; i<m_points.size() - 1; ++i )
-//    {
-//        lines_to_draw.push_back(m_points2D[m_width_in_points - 1][i]);
-//        lines_to_draw.push_back(m_points2D[m_width_in_points - 1][i+1]);
-//        lines_to_draw.push_back(m_points2D[i][m_height_in_points-1]);
-//        lines_to_draw.push_back(m_points2D[i+1][m_height_in_points-1]);
-
-//    }
     m_painter->drawLines(lines_to_draw);
     draw_interface.setSceneRect(0,0,m_draw_size.width()-2,m_draw_size.height()-2);
     draw_interface.addPixmap(m_bitmap.scaled(m_draw_size));
@@ -101,7 +93,7 @@ void Model::start_animation(){
 
     m_transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
 
-    m_timer->start(25);
+    m_timer->start(16);
 }
 
 void Model::stop_animation(){
@@ -115,8 +107,8 @@ void Model::redraw(){
 
 void Model::sine_calc(int calc)
 {
-    static int k = 0;
-    k= (calc + k) % 314;
+    static double k = 0;
+    k += 0.2;
     for (unsigned i = 0; i < m_points.size(); ++i)
         for (unsigned j = 0; j < m_points.size(); ++j){
             m_points[i][j][2]=0;
