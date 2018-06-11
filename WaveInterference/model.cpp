@@ -116,16 +116,14 @@ void Model::thread_repaint(unsigned w_from, unsigned w_to, unsigned h_from,unsig
 }
 
 void Model::start_animation(){
-
-
+    k=0;
     m_transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
     m_timer->start(50);
 }
 
 void Model::stop_animation(){
     m_timer->stop();
-    m_bitmaps.clear();
-    k=0;
+    m_bitmaps.clear();    
 }
 
 
