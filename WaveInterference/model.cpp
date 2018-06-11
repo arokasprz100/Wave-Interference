@@ -15,9 +15,9 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
 {
     k=0;
-    m_pixmap_size = QSize(1400,1400);
+    m_pixmap_size = QSize(1000,1000);
     m_bitmap = QPixmap(m_pixmap_size);
-    m_point_width_modifier = (m_pixmap_size.width()-200) / static_cast<double>(m_width_in_points);
+    m_point_width_modifier = (m_pixmap_size.width()-200)/ static_cast<double>(m_width_in_points);
     m_point_height_modifier = (m_pixmap_size.height()-200) / static_cast<double>(m_height_in_points);
     for(unsigned i = 0; i < width; ++i){
         m_points.emplace_back();
@@ -54,23 +54,27 @@ void Model::repaint()
     QGraphicsScene& draw_interface = *m_view.access_ui().graphicsView->scene();
     m_bitmap.fill();
     draw_interface.clear();
-
-    QThread *thread1 = QThread::create([this]{thread_repaint(0,m_width_in_points/2,0,m_height_in_points/2);});
-    QThread *thread2 = QThread::create([this]{thread_repaint(m_width_in_points/2,m_width_in_points,0,m_height_in_points/2);});
-    QThread *thread3 = QThread::create([this]{thread_repaint(0,m_width_in_points/2,m_height_in_points/2,m_height_in_points);});
-    QThread *thread4 = QThread::create([this]{thread_repaint(m_width_in_points/2,m_width_in_points,m_height_in_points/2,m_height_in_points);});
-    thread1->start();
-    thread2->start();
-    thread3->start();
-    thread4->start();
-    thread1->wait();
-    thread2->wait();
-    thread3->wait();
-    thread4->wait();
-
-    draw_interface.setSceneRect(0,0,m_draw_size.width()-2,m_draw_size.height()-2);
-    draw_interface.addPixmap(m_bitmap.scaled(m_draw_size));
-
+    if(m_bitmaps.size()<63){
+        QThread *thread1 = QThread::create([this]{thread_repaint(0,m_width_in_points/2,0,m_height_in_points/2.0);});
+        QThread *thread2 = QThread::create([this]{thread_repaint(m_width_in_points/2.0,m_width_in_points,0,m_height_in_points/2.0);});
+        QThread *thread3 = QThread::create([this]{thread_repaint(0,m_width_in_points/2.0,m_height_in_points/2.0,m_height_in_points);});
+        QThread *thread4 = QThread::create([this]{thread_repaint(m_width_in_points/2.0,m_width_in_points,m_height_in_points/2.0,m_height_in_points);});
+        thread1->start();
+        thread2->start();
+        thread3->start();
+        thread4->start();
+        thread1->wait();
+        thread2->wait();
+        thread3->wait();
+        thread4->wait();
+        connect_layers();
+        if(m_view.get_is_animated())m_bitmaps.push_back(m_bitmap);
+        draw_interface.setSceneRect(0,0,m_draw_size.width(),m_draw_size.height());
+        draw_interface.addPixmap(m_bitmap.scaled(m_draw_size));
+    }else{
+        draw_interface.setSceneRect(0,0,m_draw_size.width(),m_draw_size.height());
+        draw_interface.addPixmap(m_bitmaps[k%63].scaled(m_draw_size));
+    }
 }
 
 void Model::thread_repaint(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to){
@@ -93,18 +97,19 @@ void Model::thread_repaint(unsigned w_from, unsigned w_to, unsigned h_from,unsig
     QVector<QPoint> lines_to_draw;
     for(unsigned i = 0; i< how_much-1; ++i)
     {
-        for(unsigned j = 0; j < how_much - 1; ++j)
+        for(unsigned j = 0; j < how_much-1; ++j)
         {
             lines_to_draw.push_back(m_points2D[i+w_from][j+h_from]);
             lines_to_draw.push_back(m_points2D[i+w_from+1][j+h_from]);
             lines_to_draw.push_back(m_points2D[i+w_from][j+h_from]);
             lines_to_draw.push_back(m_points2D[i+w_from][j+1+h_from]);
         }
-
-        lines_to_draw.push_back(m_points2D[m_width_in_points - 1][i]);
-        lines_to_draw.push_back(m_points2D[m_width_in_points - 1][i+1]);
-        lines_to_draw.push_back(m_points2D[i][m_height_in_points-1]);
-        lines_to_draw.push_back(m_points2D[i+1][m_height_in_points-1]);
+    }
+    for(unsigned j = 0; j < how_much - 1; ++j){
+        lines_to_draw.push_back(m_points2D[w_to-1][j+h_from]);
+        lines_to_draw.push_back(m_points2D[w_to-1][j+1+h_from]);
+        lines_to_draw.push_back(m_points2D[j+w_from][h_to-1]);
+        lines_to_draw.push_back(m_points2D[j+1+w_from][h_to-1]);
     }
     m_painter->drawLines(lines_to_draw);
     return;
@@ -114,11 +119,13 @@ void Model::start_animation(){
 
 
     m_transformations = get_perspective_matrix()* get_scaling_matrix()* get_rotation_matrix(x_rotation, y_rotation, z_rotation)* Translate(-static_cast<double>(m_width_in_points*(m_point_width_modifier/2.)), -static_cast<double>(m_height_in_points*(m_point_height_modifier/2.)));
-    m_timer->start(30);
+    m_timer->start(50);
 }
 
 void Model::stop_animation(){
     m_timer->stop();
+    m_bitmaps.clear();
+    k=0;
 }
 
 
@@ -131,9 +138,22 @@ void Model::thread_sine_calc(unsigned w_from, unsigned w_to, unsigned h_from,uns
         for (unsigned j = h_from; j < h_to; ++j){
             m_points[i][j][2]=0;
             for(unsigned l = 0; l < m_points[i][j].distance.size(); ++l){
-                m_points[i][j][2]+=m_ampfreq[l].first*sin(k - m_ampfreq[l].second*0.05*m_points[i][j].distance[l]);
+                m_points[i][j][2]+=m_ampfreq[l].first*10*sin(k - m_ampfreq[l].second*0.01*m_points[i][j].distance[l]);
             }
          }
+}
+
+void Model::connect_layers(){
+    QVector<QPoint> lines_to_draw;
+    for(unsigned i =0 ; i<m_width_in_points; ++i){
+        lines_to_draw.push_back(m_points2D[m_width_in_points/2-1][i]);
+        lines_to_draw.push_back(m_points2D[m_width_in_points/2][i]);
+        lines_to_draw.push_back(m_points2D[i][m_width_in_points/2-1]);
+        lines_to_draw.push_back(m_points2D[i][m_width_in_points/2]);
+    }
+
+    m_painter->drawLines(lines_to_draw);
+    return;
 }
 
 void Model::sine_calc(int calc)
@@ -170,7 +190,6 @@ void Model::source_added(int x_pos, int y_pos, double amplitude, double frequenc
             m_points[i][j].add_source_dist(x_pos-100, y_pos-100);
         }
     }
-    std::cout<<amplitude<<" "<<frequency<<std::endl;
     m_ampfreq.push_back(std::pair<double, double>(amplitude,frequency));
 }
 

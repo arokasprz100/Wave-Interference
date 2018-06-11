@@ -21,7 +21,7 @@ class Model : public QObject
     Q_OBJECT
 
 public:
-    Model(MainWindow& view, unsigned width = 200, unsigned height = 200);
+    Model(MainWindow& view, unsigned width = 80, unsigned height = 80);
 
     void repaint();
 
@@ -40,6 +40,8 @@ private:
     void thread_sine_calc(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to);
     void thread_repaint(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to);
     std::vector<std::vector<QPoint>> m_points2D;
+    std::vector<QPixmap> m_bitmaps;
+    void connect_layers();
 
     Matrix m_transformations;
 

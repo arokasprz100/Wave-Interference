@@ -30,7 +30,7 @@ void MainWindow::resizeEvent(QResizeEvent* event)
 }
 
 void MainWindow::print_receivers(){
-    std::cout<<receivers(SIGNAL(window_resized(QSize)));
+    receivers(SIGNAL(window_resized(QSize)));
 }
 
 void MainWindow::z_rotated(int rcv){
@@ -57,6 +57,9 @@ void MainWindow::start_clicked(){
        ui->x_bar->setDisabled(true);
        ui->y_bar->setDisabled(true);
        ui->z_bar->setDisabled(true);
+       ui->m_add_button->setDisabled(true);
+       ui->m_delete_button->setDisabled(true);
+       ui->m_print->setDisabled(true);
        ui->m_animation->setText("Stop");
        is_animated=true;
        emit start_animation();
@@ -68,6 +71,9 @@ void MainWindow::start_clicked(){
         ui->x_bar->setDisabled(false);
         ui->y_bar->setDisabled(false);
         ui->z_bar->setDisabled(false);
+        ui->m_add_button->setDisabled(false);
+        ui->m_delete_button->setDisabled(false);
+        ui->m_print->setDisabled(false);
         ui->m_animation->setText("Start");
         is_animated=false;
         emit stop_animation();
