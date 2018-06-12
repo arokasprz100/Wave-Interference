@@ -41,6 +41,7 @@ private:
     void thread_repaint(unsigned w_from, unsigned w_to, unsigned h_from,unsigned h_to);
     std::vector<std::vector<QPoint>> m_points2D;
     std::vector<QPixmap> m_bitmaps;
+    QPixmap to_save_s;
     void connect_layers();
 
     Matrix m_transformations;

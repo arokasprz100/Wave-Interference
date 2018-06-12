@@ -52,9 +52,10 @@ void Model::set_draw_size(QSize draw_size){
 void Model::repaint()
 {
     QGraphicsScene& draw_interface = *m_view.access_ui().graphicsView->scene();
-    m_bitmap.fill();
     draw_interface.clear();
     if(m_bitmaps.size()<63){
+        to_save_s = m_bitmap;
+        m_bitmap.fill();
         QThread *thread1 = QThread::create([this]{thread_repaint(0,m_width_in_points/2,0,m_height_in_points/2.0);});
         QThread *thread2 = QThread::create([this]{thread_repaint(m_width_in_points/2.0,m_width_in_points,0,m_height_in_points/2.0);});
         QThread *thread3 = QThread::create([this]{thread_repaint(0,m_width_in_points/2.0,m_height_in_points/2.0,m_height_in_points);});
@@ -73,7 +74,8 @@ void Model::repaint()
         draw_interface.addPixmap(m_bitmap.scaled(m_draw_size));
     }else{
         draw_interface.setSceneRect(0,0,m_draw_size.width(),m_draw_size.height());
-        draw_interface.addPixmap(m_bitmaps[k%63].scaled(m_draw_size));
+        to_save_s = m_bitmaps[k%63];
+       draw_interface.addPixmap(m_bitmaps[k%63].scaled(m_draw_size));
     }
 }
 
@@ -176,10 +178,12 @@ void Model::sine_calc(int calc)
 
 void Model::next(){
     sine_calc();
+    to_save_s = m_bitmap;
 }
 
 void Model::previous(){
     sine_calc(-1);
+    to_save_s = m_bitmap;
 }
 
 void Model::source_added(int x_pos, int y_pos, double amplitude, double frequency){
@@ -202,12 +206,12 @@ void Model::sources_deleted(){
 
 void Model::model_clipboard(){
     QClipboard* clipboard = QApplication::clipboard();
-    clipboard->setPixmap(m_bitmap);
+    clipboard->setPixmap(to_save_s);
 }
 
 void Model::model_save(){
     QString filename = QFileDialog::getSaveFileName();
-    m_bitmap.save(filename);
+    to_save_s.save(filename);
 }
 
 void Model::print_frame(){

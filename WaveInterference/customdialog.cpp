@@ -6,16 +6,16 @@
 CustomDialog::CustomDialog()
 {
     grid = new QGridLayout;
-    x_label = new QLabel("X position(0-1000)");
-    y_label = new QLabel("Y position(0-1000)");
-    frequency_label = new QLabel("Frequency(0.0-9.9)");
-    amplitude_label = new QLabel("Amplitude(0.0-9.9)");
+    x_label = new QLabel("X position(1-1000)");
+    y_label = new QLabel("Y position(1-1000)");
+    frequency_label = new QLabel("Frequency(0,0-9,9)");
+    amplitude_label = new QLabel("Amplitude(0,0-9,9)");
 
     x_edit = new QLineEdit();
-    x_edit->setValidator(new QIntValidator(0,1000,x_edit));
+    x_edit->setValidator(new QIntValidator(1,1000,x_edit));
 
     y_edit = new QLineEdit();
-    y_edit->setValidator(new QIntValidator(0,1000,y_edit));
+    y_edit->setValidator(new QIntValidator(1,1000,y_edit));
 
     frequency_edit = new QLineEdit();
     QDoubleValidator *dbval = new QDoubleValidator(0.0, 9.9, 1, frequency_edit);
