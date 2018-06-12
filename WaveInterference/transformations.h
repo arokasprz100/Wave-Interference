@@ -15,8 +15,6 @@ Matrix get_scaling_matrix();
 
 Matrix get_perspective_matrix();
 
-Matrix get_centering_matrix(int width, int height);
-
-Matrix Translate(double width, double height);
+Matrix get_translation_matrix(double width, double height);
 
 #endif // TRANSFORMATIONS_H

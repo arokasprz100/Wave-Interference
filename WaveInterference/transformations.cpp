@@ -72,20 +72,8 @@ Matrix get_perspective_matrix()
     return perspective_cast_matrix;
 }
 
-Matrix get_centering_matrix(int width, int height)
-{
-    Matrix centering_matrix;
 
-    centering_matrix[0][0] = width / 2.0;
-    centering_matrix[1][1] = -height / 2.0;
-    centering_matrix[0][3] = width / 2.0;
-    centering_matrix[1][3] = height / 2.0;
-
-    return centering_matrix;
-
-}
-
-Matrix Translate(double width, double height)
+Matrix get_translation_matrix(double width, double height)
 {
     Matrix translation;
 
