@@ -1,14 +1,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "point.h"
-#include "matrix.h"
 #include <vector>
 #include <QGraphicsScene>
-#include "mainwindow.h"
-#include "vector4.h"
 #include <QPixmap>
 #include <QTimer>
+
+#include "point.h"
+#include "matrix.h"
+#include "mainwindow.h"
+#include "vector4.h"
 
 class QPainter;
 
@@ -21,7 +22,7 @@ class Model : public QObject
     Q_OBJECT
 
 public:
-    Model(MainWindow& view, unsigned width = 400, unsigned height = 400);
+    Model(MainWindow& view, unsigned width = 100, unsigned height = 100);
 
     void repaint();
 
