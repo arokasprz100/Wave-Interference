@@ -1,12 +1,13 @@
 ## Description 
-** Wave Interference ** is a simple Qt application for simulating water surface. User can define wave sources - using parameters such as frequency, amplitude and position. The project was created for Fundamentals of Computer Graphics university course. 
+**Wave Interference** is a simple Qt application for simulating water surface. User can define wave sources - using parameters such as frequency, amplitude and position. The project was created for Fundamentals of Computer Graphics university course. 
 
 ## Application
-![]()
+![](https://imgur.com/a/V7H3J2j)
 This screen shows GUI of our application. It provides functionalities such as: adding new wave source, deleting all sources, saving current frame to clipboard/file or printing it, playing animation frame by frame or smoothly. 
 
 ## Contributors
 [Jarosław Cierpich](https://github.com/Loniowsky)
+
 [Arkadiusz Kasprzak](https://github.com/arokasprz100)
 
 ## Documentation

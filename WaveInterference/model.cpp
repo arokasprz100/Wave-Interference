@@ -15,7 +15,7 @@ Model::Model(MainWindow& view, unsigned width, unsigned height):
     m_width_in_points(width), m_height_in_points(height), m_view(view), x_rotation(view.get_x_rotation()), y_rotation(view.get_y_rotation()), z_rotation(view.get_z_rotation()), is_animated(view.get_is_animated())
 {
     k=0;
-    m_pixmap_size = QSize(1000,1000);
+    m_pixmap_size = QSize(2000,2000);
     m_bitmap = QPixmap(m_pixmap_size);
     m_point_width_modifier = (m_pixmap_size.width()-200)/ static_cast<double>(m_width_in_points);
     m_point_height_modifier = (m_pixmap_size.height()-200) / static_cast<double>(m_height_in_points);
