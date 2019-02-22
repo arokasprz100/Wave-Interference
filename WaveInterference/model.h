@@ -1,14 +1,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "point.h"
-#include "matrix.h"
 #include <vector>
 #include <QGraphicsScene>
-#include "mainwindow.h"
-#include "vector4.h"
 #include <QPixmap>
 #include <QTimer>
+
+#include "point.h"
+#include "matrix.h"
+#include "mainwindow.h"
+#include "vector4.h"
 
 class QPainter;
 

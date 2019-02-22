@@ -7,9 +7,6 @@ class Vector4
 public:
     Vector4();
 
-    /*
-     * Simple method that prints vector to std::cout
-     */
     void print() const;
 
     void set(double x, double y, double z);
