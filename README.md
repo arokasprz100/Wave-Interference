@@ -13,9 +13,7 @@ This screen shows GUI of our application. It provides functionalities such as: a
 [Arkadiusz Kasprzak](https://github.com/arokasprz100)
 
 ## Documentation
-[PL version](https://github.com/arokasprz100/Wave-Interference/blob/master/Documentation/Grafika-dokumentacja.pdf)
-
-We provide polish version of documentation because it was required for obtaining course credit (for now we do not have english version).
+We provide polish version of documentation (in `Documentation` directory) because it was required for obtaining course credit (for now we do not have english version).
 
 ## Used technologies
 [C++ programming language](https://en.cppreference.com/w/cpp)
